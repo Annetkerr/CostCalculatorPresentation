@@ -22,7 +22,7 @@ of implementing a specific software solution.
 
 Standalone Sites    -OR-   A Shared Site
 
-![](e:/coursera/developing data products/shinyappcostcalculator/costcalcpresentation/assets/sasmall.jpg)      - OR -
+![](/assets/sasmall.jpg)      - OR -
 ![](/assets/shsmall.jpg)
 
 
