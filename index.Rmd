@@ -6,41 +6,102 @@ job         : Developing Data Products Class Project
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
-widgets     : []            # {mathjax, quiz, bootstrap}
+widgets     : [shiny, interactive, bootstrap]            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
----
-
-## Read-And-Delete
-
-1. Edit YAML front matter
-2. Write using R Markdown
-3. Use an empty line followed by three dashes to separate slides!
-
---- .class #id 
-
-## Slide 2
-
-test slide 2
 
 ---
 
-## Slide 3
 
-test slide 3
+
+## What is the Cost Calculator all about?
+
+
+This application calculates the estimated costs of two methods 
+of implementing a specific software solution.
+
+Standalone Sites    -OR-   A Shared Site
+
+![](e:/coursera/developing data products/shinyappcostcalculator/costcalcpresentation/assets/sasmall.jpg)      - OR -
+![](/assets/shsmall.jpg)
+
+
+Let's say a company is willing to subsidize the cost of implementing the software for each of its branch offices. There are two options: purchasing a separate site for each office, or implementing a single site at the main office and sharing it with the branches. The home office wants to see estimate the costs of each options, given different assumptions. This tool helps them do it. 
 
 ---
 
-## Slide 4
+## Input Variables - Standalone Sites
 
-test slide 4
+
+The tool allows the user to maniuplate a slider control to adjust the number of branches offices using each option. It also allows the user to enter assumptions about the overhead costs of supporting each option, as well as a percentage of staff support time the home office will subsidize.
+
+```{r opts.label = 'shiny'}
+slidifyUI(
+  sidebarPanel(
+    sliderInput("nStandalone", "Number of Standalone sites:", 
+                  min=0, max=33, value=10),
+    sliderInput("sasupportfactor", 
+                "Assumed annual cost of standardization across standalone sites: ($K)", 
+                  min=0, max=60, value=30)
+   
+    ),
+  mainPanel(
+    )
+  )
+```
+
+
 
 ---
 
-## Slide 5
+
+## Input Variables - Shared Site
 
 
-test slide 5
+The tool allows the user to maniuplate a slider control to adjust the number of branches offices using each option. It also allows the user to enter assumptions about the overhead costs of supporting each option, as well as a percentage of staff support time the home office will subsidize.
 
+```{r opts.label = 'shiny'}
+slidifyUI(
+  sidebarPanel(
+ sliderInput("nShared", "Number offices using shared site:", 
+                  min=0, max=33, value=10),
+      
+      # Input per site annual cost assumption (in thousand of dollars) main office will incur 
+      # supporting standardization in a shared site
+      sliderInput("aasupportfactor", "Assumed annual cost of standarization in shared site: ($K)", 
+                  min=0, max=50, value=25),
+      
+      # Input assumed percent of shared hosting paid by main office 
+      sliderInput("sharedsupportsubsidy", "Assumed percent shared Systems Admin paid by main office: (%)", 
+                  min=0, max=100, value=50)
+   
+    ),
+  mainPanel(
+    )
+  )
+```
+
+---
+
+
+## Output
+
+A simple table displays the calculated cost based on the input assumptions.
+
+For example, 
+
+```{r echo = F}
+ df <- data.frame(
+      Option = c("Standalone", 
+               "Shared"),
+      Count = as.character(c("10", "15")), 
+      cost = as.character(c("$176,220","$172,311")),
+      stringsAsFactors=FALSE)
+  print(df)
+```
+
+When 10 offices use standalone sites, and overhead per site is assumed to be $12K annually, the annual cost to the main office is $176,220.
+
+When 15 offices are using the shared site, overhead per is assumed to be $2K annually, and the main office pays 50% of the support costs, the annual cost to the main office is $172,000.
 
 
